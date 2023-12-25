@@ -12,7 +12,7 @@ class Watercolor {
     Polygon basePolygon = polygon;
     basePolygon = this.createWatercolorShapeStep(basePolygon);
     for(int i=0; i<60; i++) {
-      if(i==20 || i ==40) {
+      if(i==20 || i==40) {
         basePolygon = this.createWatercolorShapeStep(basePolygon);
       }
       Polygon newPolygon = basePolygon;

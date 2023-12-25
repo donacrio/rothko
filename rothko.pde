@@ -23,8 +23,26 @@ void setup() {
   baseTransformation.rotate(PI);
   basePolygon = (Polygon) baseTransformation.transform(basePolygon);
   
-  ArrayList<Polygon> painting = watercolor(basePolygon);
+  //ArrayList<Polygon> painting = watercolor(basePolygon);
   
+  //background(255);
+  //translate(width/2, width/2);
+  
+  //for(Polygon polygon : painting) {
+  //  noStroke();
+  //  fill(132, 169, 140, 10);
+  //  beginShape();
+  //  for(Coordinate coord : polygon.getExteriorRing().getCoordinates()) {
+  //    vertex((float)coord.x, (float) coord.y);
+  //  }
+  //  endShape();
+  //}
+  //noLoop();
+}
+
+void draw() {
+  ArrayList<Polygon> painting = watercolor(basePolygon);
+
   background(255);
   translate(width/2, width/2);
   
@@ -37,16 +55,18 @@ void setup() {
     }
     endShape();
   }
-  noLoop();
+  
+  delay(1000);
 }
 
 ArrayList<Polygon> watercolor(Polygon polygon) {
   ArrayList<Polygon> polygons = new ArrayList<Polygon>();
   Polygon basePolygon = polygon;
-  for(int i=0; i<3; i++) {
-    basePolygon = watercolorStep(basePolygon);
-  }
+  basePolygon = watercolorStep(basePolygon);
   for(int i=0; i<60; i++) {
+    if(i==20 || i ==40) {
+      basePolygon = watercolorStep(basePolygon);
+    }
     Polygon newPolygon = basePolygon;
     for(int j=0; j<3; j++) {
       newPolygon = watercolorStep(newPolygon);

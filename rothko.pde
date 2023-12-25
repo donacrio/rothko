@@ -19,23 +19,16 @@ void setup() {
   Point centroid = basePolygon.getCentroid();
   baseTransformation.translate(-centroid.getX(),-centroid.getY());
   double diameter = 2*(new MinimumBoundingCircle(basePolygon)).getRadius();
-  baseTransformation.scale(0.5*width/diameter,0.5*height/diameter);
+  baseTransformation.scale(0.4*width/diameter,0.4*height/diameter);
   baseTransformation.rotate(PI);
   basePolygon = (Polygon) baseTransformation.transform(basePolygon);
-  ArrayList<Polygon> polygons = new ArrayList<Polygon>();
-  polygons.add(basePolygon);
-  for(int i=0; i<60; i++) {
-    Polygon polygon = basePolygon;
-    for(int j=0; j<5; j++) {
-      polygon = watercolor(polygon);
-    }
-    polygons.add(polygon);
-  }
+  
+  ArrayList<Polygon> painting = watercolor(basePolygon);
   
   background(255);
   translate(width/2, width/2);
   
-  for(Polygon polygon : polygons) {
+  for(Polygon polygon : painting) {
     noStroke();
     fill(132, 169, 140, 10);
     beginShape();
@@ -47,7 +40,23 @@ void setup() {
   noLoop();
 }
 
-Polygon watercolor(Polygon polygon) {
+ArrayList<Polygon> watercolor(Polygon polygon) {
+  ArrayList<Polygon> polygons = new ArrayList<Polygon>();
+  Polygon basePolygon = polygon;
+  for(int i=0; i<3; i++) {
+    basePolygon = watercolorStep(basePolygon);
+  }
+  for(int i=0; i<60; i++) {
+    Polygon newPolygon = basePolygon;
+    for(int j=0; j<3; j++) {
+      newPolygon = watercolorStep(newPolygon);
+    }
+    polygons.add(newPolygon);
+  }
+  return polygons;
+}
+
+Polygon watercolorStep(Polygon polygon) {
   ArrayList<Coordinate> exteriorCoords = new ArrayList<Coordinate>();
   for(int i = 0; i < polygon.getExteriorRing().getCoordinates().length - 1; i++) {
     Vector2D curr = Vector2D.create(polygon.getExteriorRing().getCoordinateN(i));
